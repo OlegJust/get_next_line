@@ -1,6 +1,6 @@
-Функция get_next_lineсчитывает дескриптор файла построчно:
+The get_next_line function reads a file descriptor line by line:
 
-Он считывает данные из файла в статику bufferдо тех пор, пока не встретит новую строку или не достигнет конца файла.
-Он извлекает первую строку из buffer.
-Оставшуюся часть он сохраняет bufferдля будущих чтений.
-Вспомогательные функции выполняют манипуляции со строками (копирование, поиск и т. д.), помогая реализовать эту функциональность.
+  It reads data from the file into a static buffer until it encounters a newline or reaches the end of the file.
+  It extracts the first line from the buffer.
+  It saves the remainder of the buffer for future reads.
+The utility functions handle string manipulation (copying, searching, etc.) to help achieve this functionality.
