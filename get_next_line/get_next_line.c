@@ -6,33 +6,17 @@
 /*   By: opidhorn <opidhorn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:28:44 by opidhorn          #+#    #+#             */
-/*   Updated: 2024/11/29 17:42:42 by opidhorn         ###   ########.fr       */
+/*   Updated: 2024/12/08 19:45:18 by opidhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*crete_read_to_buffer(char **buffer, char **temp)
+static void	*safe_free(void *ptr)
 {
-	char	*temp_buffer;
-	char	*new_str;
-	size_t	len1;
-	size_t	len2;
-
-	len1 = ft_strlen(*buffer);
-	len2 = ft_strlen(*temp);
-	new_str = malloc(len1 + len2 + 1);
-	if (!new_str)
-		return (NULL);
-	ft_memmove(new_str, *buffer, len1);
-	ft_memmove(new_str + len1, *temp, len2);
-	new_str[len1 + len2] = '\0';
-	temp_buffer = new_str;
-	free(*buffer);
-	*buffer = temp_buffer;
-	if (!buffer)
-		free(temp);
-	return (0);
+	if (ptr)
+		free(ptr);
+	return (NULL);
 }
 
 static char	*read_to_buffer(int fd, char *buffer)
@@ -40,24 +24,24 @@ static char	*read_to_buffer(int fd, char *buffer)
 	char	*temp;
 	int		bytes_read;
 
+	if (!buffer)
+		buffer = ft_strdup("");
+	if (!buffer)
+		return (NULL);
 	temp = (char *)malloc(BUFFER_SIZE + 1);
 	if (!temp)
-		return (NULL);
+		return (safe_free(buffer));
 	while (!ft_strchr(buffer, '\n'))
 	{
 		bytes_read = read(fd, temp, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			free(temp);
-			free(buffer);
-			return (NULL);
-		}
+			return (safe_free(temp), safe_free(buffer));
 		if (bytes_read == 0)
 			break ;
 		temp[bytes_read] = '\0';
 		crete_read_to_buffer(&buffer, &temp);
 		if (!buffer)
-			return (NULL);
+			return (safe_free(buffer));
 	}
 	free(temp);
 	return (buffer);

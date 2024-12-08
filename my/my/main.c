@@ -20,6 +20,11 @@ int main(int argc, char **argv)
         perror("Error opening file");
         return (1);
     }
+    if (fd < 1)
+    {
+        perror("Error opening file");
+        return (1);
+    }
 
     // Читаем и выводим строки
     while ((line = get_next_line(fd)) != NULL)
