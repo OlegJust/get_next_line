@@ -7,6 +7,7 @@
 		"iterator": "c",
 		"string_view": "c",
 		"span": "c",
-		"unordered_map": "c"
+		"unordered_map": "c",
+		"get_next_line.h": "c"
 	}
 }
