@@ -6,11 +6,13 @@
 /*   By: opidhorn <opidhorn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:28:35 by opidhorn          #+#    #+#             */
-/*   Updated: 2024/12/08 19:44:47 by opidhorn         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:22:55 by opidhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
+
 
 void	*crete_read_to_buffer(char **buffer, char **temp)
 {

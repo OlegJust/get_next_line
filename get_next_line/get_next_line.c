@@ -6,7 +6,7 @@
 /*   By: opidhorn <opidhorn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:28:44 by opidhorn          #+#    #+#             */
-/*   Updated: 2024/12/08 19:45:18 by opidhorn         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:21:57 by opidhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,16 @@ static char	*read_to_buffer(int fd, char *buffer)
 	char	*temp;
 	int		bytes_read;
 
+
+	// this line execute just for the first time
 	if (!buffer)
-		buffer = ft_strdup("");
+	{
+		buffer = malloc(1);
+		if (!buffer)
+			return (NULL);
+		buffer[0] = '\0';
+	}
+		// buffer = ft_strdup("");
 	if (!buffer)
 		return (NULL);
 	temp = (char *)malloc(BUFFER_SIZE + 1);
