@@ -4,106 +4,99 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <string.h>
 
-void wait_for_keypress() {
-    // struct termios oldt, newt;
-    // printf("Click any source to continue...\n");
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*line;
+// 	int		i;
 
-    // tcgetattr(STDIN_FILENO, &oldt);
-    // newt = oldt;
+// 	i = 0;
+// 	while (i = 9)
+// 	{
+// 		fd = open("example.txt", O_RDONLY);
+// 		if (fd < 0)
+// 		{
+// 			printf("ERROR\n");
+// 			return (0);
+// 		}
+// 		line = get_next_line(fd);
+// 		while (line != NULL)
+// 		{
+// 			printf("%s", line);
+// 			free(line);
+// 			line = get_next_line(fd);
+// 		}
+// 		free(line);
+// 		close(fd);
+// 		i++;
+// 	}
+	
+	
+// }
 
-    // newt.c_lflag &= ~(ICANON | ECHO);
-    // tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+void process_file(const char *file_path) {
+    // Здесь вы можете обрабатывать файл, как вам нужно
+    
+	int		fd;
+	char	*line;
 
-    // getchar();
-    // tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	printf("Processing file: %s\n", file_path);
+	fd = open(file_path, O_RDONLY);
+	if (fd < 0)
+		printf("ERROR\n");
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+	close(fd);
+	
+	
 }
 
-int	main(void)
-{
-	char	*line;
-	int		i;
-	int		fd1;
-	int		fd2;
-	int		fd3;
-	int		fd4;
-	int		fd5;
-	int		fd6;
-	int		fd7;
-	int		fd8;
-	int		fd9;
-	int		fd10;
-	int		fd11;
+void list_files_in_directory(const char *directory_path) {
+    DIR *dir = opendir(directory_path);
+    if (!dir) {
+        perror("opendir failed");
+        return;
+    }
 
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        // Пропускаем "." и ".."
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
 
-	fd1 = open("./text/example.txt", O_RDONLY);
-	fd2 = open("./text/1char.txt", O_RDONLY);
-	fd3 = open("./text/empty.txt", O_RDONLY);
-	fd4 = open("./text/giant_line_nl.txt", O_RDONLY);
-	fd5 = open("./text/giant_line.txt", O_RDONLY);
-	fd6 = open("./text/lines_around_10.txt", O_RDONLY);
-	fd7 = open("./text/multiple_nl.txt", O_RDONLY);
-	fd8 = open("./text/one_line_no_nl.txt", O_RDONLY);
-	fd9 = open("./text/only_nl.txt", O_RDONLY);
-	fd10 = open("./text/read_error.txt", O_RDONLY);
-	fd11 = open("./text/variable_nls.txt", O_RDONLY);
-	i = 1;
-	
-	line = get_next_line(fd1);
-	printf("example.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd2);
-	printf("1char.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd3);
-	printf("empty.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd4);
-	printf("giant_line_nl.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd5);
-	printf("giant_line.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd6);
-	printf("lines_around_10.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd7);
-	printf("multiple_nl.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd8);
-	printf("one_line_no_nl.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd9);
-	printf("only_nl.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd10);
-	printf("read_error.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
-	line = get_next_line(fd11);
-	printf("variable_nls.txt [%02d]: %s \n", i, line);
-	free(line);
-	wait_for_keypress();
+        char full_path[1024];
+        snprintf(full_path, sizeof(full_path), "%s/%s", directory_path, entry->d_name);
 
-	close(fd1);
-	close(fd2);
-	close(fd3);
-	close(fd4);
-	close(fd5);
-	close(fd6);
-	close(fd7);
-	close(fd8);
-	close(fd9);
-	close(fd10);
-	close(fd11);
-	return (0);
+        // Проверяем, является ли это файлом или директорией
+        if (entry->d_type == DT_DIR) {
+            // Если это директория, рекурсивно вызываем функцию
+            list_files_in_directory(full_path);
+        } else if (entry->d_type == DT_REG) {
+            // Если это файл, обрабатываем его
+            process_file(full_path);
+        }
+    }
+
+    closedir(dir);
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <directory_path>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    list_files_in_directory(argv[1]);
+    return EXIT_SUCCESS;
 }

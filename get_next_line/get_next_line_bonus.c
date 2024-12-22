@@ -6,7 +6,7 @@
 /*   By: opidhorn <opidhorn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:28:44 by opidhorn          #+#    #+#             */
-/*   Updated: 2024/12/11 17:31:23 by opidhorn         ###   ########.fr       */
+/*   Updated: 2024/12/22 12:57:34 by opidhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,8 @@ static char	*read_to_buffer(int fd, char *buffer)
 	int		bytes_read;
 
 	if (!buffer)
-	{
-		buffer = malloc(1);
-		if (!buffer)
-			return (NULL);
-		buffer[0] = '\0';
-	}
-	if (!buffer[fd])
+		buffer = ft_strdup("");
+	if (!buffer)
 		return (NULL);
 	temp = (char *)malloc(BUFFER_SIZE + 1);
 	if (!temp)
@@ -89,7 +84,7 @@ static char	*save_remainder(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[1024] = {NULL};
+	static char	*buffer[OPEN_MAX];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)

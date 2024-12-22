@@ -6,14 +6,17 @@
 /*   By: opidhorn <opidhorn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:28:28 by opidhorn          #+#    #+#             */
-/*   Updated: 2024/12/11 16:04:14 by opidhorn         ###   ########.fr       */
+/*   Updated: 2024/12/22 12:14:15 by opidhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 42
+# endif
+# ifndef OPEN_MAX
+#  define OPEN_MAX 4242
 # endif
 
 # include <stdlib.h>
